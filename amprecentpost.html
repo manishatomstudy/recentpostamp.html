@@ -1,0 +1,82 @@
+<style scoped='' type="text/css">
+    #recent-posts {
+        font-family: "FiraSans", "Roboto", "Oxygen-Sans", "Ubuntu", "Cantarell", "Helvetica Neue", sans-serif;
+        line-height: 32px;
+    }
+    
+    ul#recent-posts {
+        list-style: none;
+        margin: 0;
+        padding: 0
+    }
+    
+    li.recent-posts {
+        display: block;
+        clear: both;
+        overflow: hidden;
+        list-style: none;
+        border-bottom: 1px solid #f1f1f1;
+        border-left: solid 3px #019688;
+        padding: 10px 5px 5px 10px;
+        margin: 10px auto;
+        text-decoration: none;
+    }
+    
+    li.recent-posts:last-child {
+        border-bottom: 0;
+    }
+    
+    li.recent-posts a {
+        color: #444;
+      text-decoration:none;
+    }
+    
+    li.recent-posts a:hover {
+        color: #000;
+        text-decoration: none
+    }
+    
+    #HTML1 li {
+        border-left: solid 3px #019688;
+        padding: 10px 5px 5px 10px;
+        margin: 10px auto;
+    }
+</style>
+
+<ul id="recent-posts"></ul>
+<script>
+//<![CDATA[
+var homePage = "https://www.janganlupabahagia.com",
+    numPosts = 6;
+
+function recentPosts(a) {
+    if (document.getElementById("recent-posts")) {
+        var e = a.feed.entry,
+            title, link, content = "",
+            ct = document.getElementById("recent-posts");
+        for (var i = 0; i < numPosts; i++) {
+            for (var j = 0; j < numPosts; j++) {
+                if (e[i].link[j].rel == "alternate") {
+                    link = e[i].link[j].href;
+                    break
+                }
+            }
+            var title = e[i].title.$t;
+            content += '<li class="recent-posts"><a href="' + link + '" title="' + title + '" >' + title + '</a></li>'
+        }
+        ct.innerHTML = content
+    }
+}
+    // not using jquery
+window.onload = function(){
+  var anchors = document.getElementById('recent-posts').getElementsByTagName('a');
+  for (var i=0; i<anchors.length; i++){
+    anchors[i].setAttribute('target', '_blank');
+  }
+}
+    
+var rcp = document.createElement('script');
+rcp.src = homePage + '/feeds/posts/summary?alt=json-in-script&orderby=published&max-results=' + numPosts + '&callback=recentPosts';
+document.getElementsByTagName('head')[0].appendChild(rcp);
+//]]>
+</script>
